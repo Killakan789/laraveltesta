@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Июл 08 2021 г., 09:01
+-- Время создания: Июл 08 2021 г., 11:42
 -- Версия сервера: 5.7.29
 -- Версия PHP: 7.4.14
 
@@ -80,7 +80,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (2, '2014_10_12_100000_create_password_resets_table', 1),
 (3, '2019_08_19_000000_create_failed_jobs_table', 1),
 (4, '2021_07_07_162446_create_apis_table', 1),
-(5, '2021_07_07_183832_create_orders_table', 2);
+(5, '2021_07_07_183832_create_orders_table', 2),
+(6, '2021_07_08_070846_users_api_token_add', 3);
 
 -- --------------------------------------------------------
 
@@ -95,15 +96,6 @@ CREATE TABLE `orders` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Дамп данных таблицы `orders`
---
-
-INSERT INTO `orders` (`id`, `t_body`, `status`, `created_at`, `updated_at`) VALUES
-(1, '{\"id\":\"12345-7891234567\",\"operation\":\"pay\",\"status\":\"succeed\"}', 1, '2021-07-07 16:08:13', '2021-07-07 16:08:13'),
-(2, '{\"id\":\"12345-7891234567\",\"operation\":\"pay\",\"status\":\"fail\"}', 1, '2021-07-07 16:08:25', '2021-07-07 16:08:25'),
-(3, '{\"id\":\"12345-7891234567\",\"operation\":\"pay\",\"status\":\"succed\"}', 1, '2021-07-07 16:11:44', '2021-07-07 16:11:44');
 
 -- --------------------------------------------------------
 
@@ -129,17 +121,11 @@ CREATE TABLE `users` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `api_token` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Дамп данных таблицы `users`
---
-
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'test', 'test@gmail.com', NULL, '$2y$10$r3kIXf6jLwSlksYuTHj1h.j9nUmMIKw78YKhsJWrgFcm4YE2t2liG', NULL, '2021-07-07 13:41:11', '2021-07-07 13:41:11');
 
 --
 -- Индексы сохранённых таблиц
@@ -180,7 +166,8 @@ ALTER TABLE `password_resets`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`);
+  ADD UNIQUE KEY `users_email_unique` (`email`),
+  ADD UNIQUE KEY `users_api_token_unique` (`api_token`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
@@ -202,19 +189,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
